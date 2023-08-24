@@ -1,0 +1,163 @@
+﻿@model CarBook.Models.Blog
+
+@{
+    ViewData["Title"] = "Details";
+    var img = Url.Content("~/assets/images/bg_3.jpg");
+    CarBookContext _context = new();
+    List<Comment> comments = ViewBag.Cmt;
+    List<Comment> cmts = ViewBag.Cmts;
+    ViewBag.active = 6;
+}
+<style>
+    .Description img{
+        width: 100%;
+    }
+</style>
+
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('@img');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+            <div class="col-md-9 ftco-animate pb-5">
+                <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span class="mr-2"><a href="blog.html">Blog <i class="ion-ios-arrow-forward"></i></a></span> <span>Blog Detail <i class="ion-ios-arrow-forward"></i></span></p>
+                <h1 class="mb-3 bread">Read our blog</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section ftco-degree-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 ftco-animate">
+                <div>
+                    <h1>@Html.DisplayFor(model => model.Title)</h1>
+                    <div class="meta">
+                        <span class="icon-calendar" style="margin-right: 5px"></span>@Model.Create_Date.ToString("MMM. dd, yyyy")
+                        <span class="icon-person" style="margin-left:10px"></span> @Html.DisplayFor(model => model.Author.UserName)
+                    </div>
+                </div>
+                <br />
+                <div class="Description">
+                    @Html.Raw(Model.Description)
+                </div>
+
+                <div class="pt-5 mt-5">
+                    <h3 class="mb-5">@ViewBag.totalCmt Comments</h3>
+                    <ul class="comment-list">
+                        @{
+                            foreach (Comment cmt in comments.Where(c => c.ParentId == null))
+                            {
+                                <li class="comment">
+                                    <div class="vcard bio">
+                                        <img src="@cmt.Owner.UserName">
+                                    </div>
+                                    <div class="comment-body">
+                                        <h3>@cmt.Owner.UserName</h3>
+                                        <div class="meta">@cmt.CreatedDate.ToString("MMM. dd, yyyy 'at' h:mm tt ")</div>
+                                        <p>@cmt.Content</p>
+                                        <p><a class="reply" onclick="createForm(@cmt.Id)">Reply</a></p>
+                                    </div>
+
+                                    <!-- reply form -->
+                                    <div id="@cmt.Id" class="comment-body" style="display:none">
+                                        <form asp-action="Comment" asp-controller="Blogs">
+                                            <input type="number" name="BlogID" value="@Html.DisplayFor(model => model.Id)" hidden />
+                                            <input type="text" name="ContenType" value="reply" hidden />
+                                            <input type="number" name="ParentID" value="@cmt.Id" hidden />
+                                            <div class="form-group">
+                                                <div style="display:flex; justify-content: space-between">
+                                                    <label for="message">Comment</label>
+                                                    <a style="font-size: 20px; padding-right: 30px" onclick="closeForm(@cmt.Id)"><span class="ion-ios-close"></span></a>
+                                                </div>
+                                                <textarea name="Content" id="message" cols="30" rows="5" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Post Comment" class="btn py-3 px-4 btn-primary">
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <!-- Show reply -->
+                                    @{
+                                        foreach (Comment reply in comments.Where(c => c.ParentId == cmt.Id))
+                                        {
+                                            <ul class="children">
+                                                <li class="comment">
+                                                    <div class="vcard bio">
+                                                        <img src="@reply.Owner.UserName">
+                                                    </div>
+                                                    <div class="comment-body">
+                                                        <h3>@reply.Owner.UserName</h3>
+                                                        <div class="meta">@reply.CreatedDate.ToString("MMM. dd, yyyy 'at' h:mm tt ")</div>
+                                                        <p>@reply.Content</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        }
+                                    }
+                                </li>
+                            }
+                        }
+                    </ul>
+                    <!-- END comment-list -->
+
+                    <div class="comment-form-wrap pt-5">
+                        <h3 class="mb-5">Leave a comment</h3>
+                        <form asp-action="Comment" asp-controller="Blogs">
+                            <input type="number" name="BlogID" value="@Html.DisplayFor(model => model.Id)" hidden />
+                            <input type="text" name="ContenType" value="cmt" hidden />
+                            <div class="form-group">
+                                <label for="message">Comment</label>
+                                <textarea name="Content" id="message" cols="30" rows="5" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Post Comment" class="btn py-3 px-4 btn-primary">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div> <!-- .col-md-8 -->
+            <div class="col-md-4 sidebar ftco-animate">
+                <div class="sidebar-box ftco-animate">
+                    <h3>Recent Blog</h3>
+                    @{
+                        foreach (Blog item in ViewBag.recentBlog)
+                        {
+                            <div class="block-21 mb-4 d-flex">
+                                <a class="blog-img mr-4" style="background-image: url(@item.Image);"></a>
+                                <div class="text">
+                                    <h3 class="heading"><a asp-action="Details" asp-route-id="@item.Id">@item.Title</a></h3>
+                                    <div class="meta">
+                                        <div><a><span class="icon-calendar"></span>@item.Create_Date.ToString("MMM. dd, yyyy")</a></div>
+                                        <div><a><span class="icon-person"></span> @item.Author.UserName</a></div>
+                                        <div>
+                                            <a>
+                                                <span class="icon-chat"></span> @{
+                                                    int count = cmts.Where(c => c.BlogId == item.Id).Count();
+                                                }
+                                                @count
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+    function createForm(parentID) {
+        document.getElementById(parentID).style.display = 'block';
+    }
+    function closeForm(parentID) {
+        document.getElementById(parentID).style.display = 'none';
+    }
+</script>

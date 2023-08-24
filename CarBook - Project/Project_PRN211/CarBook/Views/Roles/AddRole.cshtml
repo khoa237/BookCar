@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@{
+    var img = Url.Content("~/assets/images/bg_3.jpg");
+}
+
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('@img');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+            <div class="col-md-9 ftco-animate pb-5">
+                <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span class="mr-2"><a href="blog.html">Blog <i class="ion-ios-arrow-forward"></i></a></span> <span>Blog Detail <i class="ion-ios-arrow-forward"></i></span></p>
+                <h1 class="mb-3 bread">Read our blog</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<h2>Add role for @ViewBag.User.UserName</h2>
+<h3>Roles are set up for users</h3>
+<form asp-action="AddRole" method="post">
+    @*Hidden field*@
+    <input type="hidden" value="@ViewBag.User.Id" name="id"/>
+    <select name="roles" multiple style="width: 300px; height: 150px;">
+        @foreach (IdentityRole role in ViewBag.listRoles)
+        {
+            bool selected = false;
+            @foreach (var roleSl in ViewBag.listUserRoles)
+            {
+                if (role.Name.Equals(roleSl)) { 
+                    selected = true; 
+                }
+            }
+            @if (selected)
+            {
+                <option selected value="@role.Name">@role.Name</option>
+            }
+            else
+            {
+                <option value="@role.Name">@role.Name</option>
+            }
+
+        }
+    </select><br />
+    <input type="submit" value="Update" class="btn btn-success" />
+</form>
+

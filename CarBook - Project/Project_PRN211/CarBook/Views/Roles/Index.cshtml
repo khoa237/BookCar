@@ -1,0 +1,67 @@
+﻿@using Microsoft.AspNetCore.Identity
+@{
+    var listR = ViewBag.listRoles as List<IdentityRole>;
+    var img = Url.Content("~/assets/images/bg_3.jpg");
+}
+
+<style>
+    .table1, th, td {
+        border: 1px solid #dee2e6;
+        vertical-align: top;
+        text-align: left;
+        padding: 8px;
+        border-collapse: collapse;
+    }
+
+    .mb-0 tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .mb-0 tr:hover {
+        background-color: #ddd;
+    }
+
+    thead tr th {
+        text-align: center;
+    }
+</style>
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('@img');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+            <div class="col-md-9 ftco-animate pb-5">
+                <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span class="mr-2"><a href="blog.html">Blog <i class="ion-ios-arrow-forward"></i></a></span> <span>Blog Detail <i class="ion-ios-arrow-forward"></i></span></p>
+                <h1 class="mb-3 bread">Read our blog</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<h1 class="text-center">Role list</h1>
+
+<a asp-action="Create" class="btn btn-success"><i class="ri ri-add-circle-line"></i>Add</a>
+<div class="table-responsive shadow rounded">
+    <table id="table" class="  table table-center bg-white mb-0">
+        <br />
+        <thead>
+            <tr style="background-color:#396cf0; color: #ffffff">
+                <th class="border-bottom p-3" style="min-width: 50px;">ID</th>
+                <th class="border-bottom p-3" style="min-width: 120px;">Name</th>
+                <th class="border-bottom p-3" style="min-width: 50px;">Button</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in listR)
+            {
+                <tr>
+                    <td class="p-3">@item.Id</td>
+                    <td class="p-3">@item.Name</td>
+                    <td class="text-center">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"><i class="uil uil-pen"></i></a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="uil uil-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

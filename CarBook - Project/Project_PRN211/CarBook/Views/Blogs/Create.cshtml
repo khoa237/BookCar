@@ -1,0 +1,74 @@
+﻿@model CarBook.Models.Blog
+
+@{
+    ViewData["Title"] = "Create";
+    var img = Url.Content("~/assets/images/bg_3.jpg");
+}
+
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('@img');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+            <div class="col-md-9 ftco-animate pb-5">
+                <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span class="mr-2"><a href="blog.html">Blog <i class="ion-ios-arrow-forward"></i></a></span> <span>New Blog <i class="ion-ios-arrow-forward"></i></span></p>
+                <h1 class="mb-3 bread">Create blog</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<form asp-action="Create">
+    <section class="ftco-section ftco-car-details">
+        <div class="container">
+            <div class="col-md-12">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="car-details">
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <textarea asp-for="Description" class="form-control" style="height: 300px" rows="10"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Summary" class="control-label"></label>
+                        <input asp-for="Summary" class="form-control" />
+                        <span asp-validation-for="Summary" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Image" class="control-label"></label>
+                        <input asp-for="Image" class="form-control" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                    </div>
+                    <input asp-for="AuthorID" class="form-control" value="@ViewBag.AuthorID" hidden />
+                </div>
+            </div>
+            <div class="form-group" style="text-align: center">
+                <input type="submit" value="Create" class="btn btn-secondary py-2 ml-1" style="height:52px; width: 150px" />
+                <a class="btn btn-dark py-2 ml-1" asp-action="Index" style="line-height:34px; width: 150px">Back to List</a>
+            </div>
+        </div>
+    </section>
+</form>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#Description'))
+        .then(editor => {
+            console.log(editor);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,190 @@
+﻿@model PaginatedList<Car>
+@{
+    ViewData["Title"] = "Index";
+    ViewBag.active = 5;
+    int totalCount = (int)ViewData["TotalCount"];
+}
+<style>
+    .centered-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5px;
+    }
+
+    .row.flex-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .col-md-6.flex-item {
+        flex-basis: calc(50% - 10px);
+    }
+
+    .button-group button {
+        background-color: white;
+        border: 1px solid #403f3f;
+        border-radius: 20px;
+        padding: 5px 10px;
+        margin: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .button-group button:hover {
+            background-color: #fff;
+            color: white;
+            cursor: pointer;
+        }
+</style>
+
+
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('assets/images/bg_3.jpg');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+            <div class="col-md-9 ftco-animate pb-5">
+                <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Cars <i class="ion-ios-arrow-forward"></i></span></p>
+                <h1 class="mb-3 bread">Choose Your Car</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="container">
+
+
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-7 text-center heading-section ftco-animate">
+        </div>
+    </div>
+    <div class="row justify-content-start flex-container">
+        <div class="col-md-6 ftco-animate flex-item" style="margin: 5px;">
+            <form asp-action="Index" method="get" class="search-form">
+                <div class="form-group" style="width: 65%;">
+                    <input type="text" class="form-control" placeholder="Search car by name, category, or price" name="searchString" value="@ViewData["CurrentFilter"]">
+                    <span type="submit" value="Search"> <i class="icon icon-search" style="margin-top: -15px;"></i></span>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6 d-flex align-items-center flex-item" style="margin-top:-40px; ">
+            <div class="button-group ml-auto">
+                <span class="dropdown">
+                    <button class="dropdown-toggle" type="button" id="carBrandDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="icon-car"></i> Car Brand
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="carBrandDropdown">
+                        @foreach (var category in ViewData["CategoryList"] as List<Category>)
+                        {
+                            <a class="dropdown-item" asp-route-categoryId="@category.Id">@category.Name</a>
+                        }
+                    </div>
+                </span>
+
+                <button>
+                    <a asp-action="Index" asp-route-electricCar="Electricity" asp-route-currentFilter="@ViewData["CurrentFilter"]" style="color: #424242;"><i class="icon-leaf"></i> Electric Vehicle</a>
+                </button>
+                <span class="dropdown">
+                    <button class="dropdown-toggle" type="button" id="carBrandDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="icon-usd"></i> Unit Price
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="carBrandDropdown">
+                        <a class="dropdown-item" asp-action="Index" asp-route-sortOrder="@ViewData["SortPriceA"]">Ascending</a>
+                        <a class="dropdown-item" asp-action="Index" asp-route-sortOrder="@ViewData["SortPriceD"]">Decrease</a>
+                    </div>
+                </span>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4">
+                <div class="car-wrap rounded ftco-animate">
+                    <div class="img rounded d-flex align-items-end" style="background-image: url(  @Html.DisplayFor(modelItem => item.Image));">
+                    </div>
+                    <div class="text">
+                        <h2 class="mb-0"><a href="car-single.html">@Html.DisplayFor(modelItem => item.Name)</a></h2>
+                        <div class="d-flex mb-3">
+                            <span class="cat">@Html.DisplayFor(modelItem => item.Category.Name)</span>
+                            <p class="price ml-auto">$@Html.DisplayFor(modelItem => item.Price) <span>/day</span></p>
+                        </div>
+                        <p class="d-flex mb-0 d-block"><a asp-controller="Orders" asp-action="Create" asp-route-id="@item.Id" class="btn btn-primary py-2 mr-1">Book now</a> 
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary py-2 ml-1">Details</a></p>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+    </div>
+
+    <div class="row mt-5">
+        <div class="col text-center">
+            <div class="block-27">
+                <ul>
+
+                    @{
+                        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                    }
+                    <li class="left_btn">
+                        <a asp-action="Index"
+                           asp-route-pageNumber="@(Model.PageIndex - 1)"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                           asp-route-electricCar="@ViewData["CarElectric"]"
+                           asp-route-categoryId="@ViewData["CurrentCategory"]"
+                           asp-route-sortOrder="@ViewData["SortPriceA"]"
+                           asp-route-sortOrder="@ViewData["SortPriceD"]"
+                           class="btn btn-default @prevDisabled" style="font-size: 20px;">
+                            <i class="icon-chevron-left centered-icon" style="padding-bottom: 10px;"></i>
+                        </a>
+                    </li>
+                    @foreach (var i in Enumerable.Range(1, totalCount))
+                    {
+                        <li class="@Html.Raw(Model.PageIndex == i ? "active" : "")">
+                            <a asp-action="Index"
+                               asp-route-pageNumber="@i"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                               asp-route-electricCar="@ViewData["CarElectric"]"
+                               asp-route-sortOrder="@ViewData["SortPriceA"]"
+                               asp-route-sortOrder="@ViewData["SortPriceD"]"
+                               asp-route-categoryId="@ViewData["CurrentCategory"]">@i</a>
+                        </li>
+                    }
+
+                    <li right_btn>
+                        <a asp-action="Index"
+                           asp-route-pageNumber="@(Model.PageIndex + 1)"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                           asp-route-electricCar="@ViewData["CarElectric"]"
+                           asp-route-categoryId="@ViewData["CurrentCategory"]"
+                           asp-route-sortOrder="@ViewData["SortPriceA"]"
+                           asp-route-sortOrder="@ViewData["SortPriceD"]"
+                           class="btn btn-default @nextDisabled" style="font-size: 20px;">
+                            <i class="icon-chevron-right centered-icon" style="padding-bottom: 10px;"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+

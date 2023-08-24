@@ -1,0 +1,227 @@
+﻿@model CarBook.Models.Car
+
+@{
+    ViewData["Title"] = "Create";
+    Feature? feat = ViewBag.Feature;
+    Property? prt = ViewBag.Property;
+    var img = Url.Content("~/assets/images/bg_3.jpg");
+}
+<style>
+    .property {
+        width: 80px;
+        height: 26.2px;
+        margin-left: 16px;
+    }
+</style>
+
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('@img');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+            <div class="col-md-9 ftco-animate pb-5">
+                <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Car details <i class="ion-ios-arrow-forward"></i></span></p>
+                <h1 class="mb-3 bread">Car Details</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<form asp-action="Create">
+    <section class="ftco-section ftco-car-details">
+        <div class="container">
+            <div class="col-md-12">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="car-details">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-6">
+                            <label asp-for="Price" class="control-label"></label>
+                            <input asp-for="Price" class="form-control" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label asp-for="Category" class="control-label"></label>
+                            <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.CategoryID"></select>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-7">
+                            <label asp-for="Image" class="control-label"></label>
+                            <input asp-for="Image" class="form-control" placeholder="URL"/>
+                            <span asp-validation-for="Image" class="text-danger"></span>
+                        </div>
+                     
+                    </div>
+                    <input asp-for="OwnerID" class="form-control" value="@ViewBag.OwnerID" hidden/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md d-flex align-self-stretch ftco-animate">
+                    <div class="media block-6 services">
+                        <div class="media-body py-md-4">
+                            <div class="d-flex mb-3 align-items-center">
+                                <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-dashboard"></span></div>
+                                <div class="text">
+                                    <h3 class="heading mb-0 pl-3">Mileage</h3>
+                                    <input class="property" name="Mileage" type="number" value="@prt.Milerage" required/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md d-flex align-self-stretch ftco-animate">
+                    <div class="media block-6 services">
+                        <div class="media-body py-md-4">
+                            <div class="d-flex mb-3 align-items-center">
+                                <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-pistons"></span></div>
+                                <div class="text">
+                                    <h3 class="heading mb-0 pl-3">Transmission</h3>
+                                    <input class="property" name="Transmission" type="text" value="@prt.Transmission" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md d-flex align-self-stretch ftco-animate">
+                    <div class="media block-6 services">
+                        <div class="media-body py-md-4">
+                            <div class="d-flex mb-3 align-items-center">
+                                <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-car-seat"></span></div>
+                                <div class="text">
+                                    <h3 class="heading mb-0 pl-3">
+                                        Seats
+                                    </h3>
+                                    <input class="property" name="Seats" type="number" style="width: 36px" value="@prt.Seats" required /><span style="color:black"> Adults</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md d-flex align-self-stretch ftco-animate">
+                    <div class="media block-6 services">
+                        <div class="media-body py-md-4">
+                            <div class="d-flex mb-3 align-items-center">
+                                <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-backpack"></span></div>
+                                <div class="text">
+                                    <h3 class="heading mb-0 pl-3">
+                                        Luggage
+                                    </h3>
+                                    <input class="property" name="Luggage" type="number" style="width: 36px" value="@prt.Luggage" required /><span style="color:black"> Bags</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md d-flex align-self-stretch ftco-animate">
+                    <div class="media block-6 services">
+                        <div class="media-body py-md-4">
+                            <div class="d-flex mb-3 align-items-center">
+                                <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-diesel" ></span></div>
+                                <div class="text">
+                                    <h3 class="heading mb-0 pl-3">
+                                        Fuel
+                                    </h3>
+                                    <input class="property" name="Fuel" type="text" value="@prt.Fuel" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 pills">
+                    <div class="bd-example bd-example-tabs">
+                        <div class="d-flex justify-content-center">
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="pills-description-tab" data-toggle="pill" href="#pills-description" role="tab" aria-controls="pills-description" aria-expanded="true">Features</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-manufacturer-tab" data-toggle="pill" href="#pills-manufacturer" role="tab" aria-controls="pills-manufacturer" aria-expanded="true">Description</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <ul class="features">
+                                            <li class="check"><input type="checkbox" name="isAirconditions" value="True" @Html.Raw(feat.IsAirconditions ? "checked":"")/>Airconditions</li>
+                                            <li class="check"><input type="checkbox" name="isChildSeat" value="True" @Html.Raw(feat.IsChildSeat ? "checked":"") />Child Seat</li>
+                                            <li class="check"><input type="checkbox" name="isGPS" value="True" @Html.Raw(feat.IsGPS ? "checked":"") />GPS</li>
+                                            <li class="check"><input type="checkbox" name="isLuggage" value="True" @Html.Raw(feat.IsLuggage ? "checked":"") />Luggage</li>
+                                            <li class="check"><input type="checkbox" name="isMusic" value="True" @Html.Raw(feat.IsMusic ? "checked":"") />Music</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul class="features">
+                                            <li class="check"><input type="checkbox" name="isSeatBelt" value="True" @Html.Raw(feat.IsSeatBelt ? "checked":"") />Seat Belt</li>
+                                            <li class="remove"><input type="checkbox" name="isSleepingBed" value="True" @Html.Raw(feat.IsSleepingBed ? "checked":"") />Sleeping Bed</li>
+                                            <li class="check"><input type="checkbox" name="isWater" value="True" @Html.Raw(feat.IsWater ? "checked":"") />Water</li>
+                                            <li class="check"><input type="checkbox" name="isBluetooth" value="True" @Html.Raw(feat.IsBluetooth ? "checked":"") />Bluetooth</li>
+                                            <li class="remove"><input type="checkbox" name="isOnboardComputer" value="True" @Html.Raw(feat.IsOnboardComputer ? "checked":"") />Onboard computer</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul class="features">
+                                            <li class="check"><input type="checkbox" name="isAudioInput" value="True" @Html.Raw(feat.IsAudioInput ? "checked":"") />Audio input</li>
+                                            <li class="check"><input type="checkbox" name="isLongTermTrips" value="True" @Html.Raw(feat.IsLongTermTrips ? "checked":"") />Long Term Trips</li>
+                                            <li class="check"><input type="checkbox" name="isCarKit" value="True" @Html.Raw(feat.IsCarKit ? "checked":"") />Car Kit</li>
+                                            <li class="check"><input type="checkbox" name="isRemoteCentralLocking" value="True" @Html.Raw(feat.IsRemoteCentralLocking ? "checked":"") />Remote central locking</li>
+                                            <li class="check"><input type="checkbox" name="isClimateControl" value="True" @Html.Raw(feat.IsClimateControl ? "checked":"") />Climate control</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="pills-manufacturer" role="tabpanel" aria-labelledby="pills-manufacturer-tab">
+                                <textarea asp-for="Description" class="form-control" style="height: 300px" rows="10"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" style="text-align: center">
+                <input type="submit" value="Create" class="btn btn-secondary py-2 ml-1" style="height:52px; width: 150px" />
+                <a class="btn btn-dark py-2 ml-1" asp-action="Index" style="line-height:34px; width: 150px">Back to List</a>
+            </div>
+        </div>
+    </section>
+</form>
+<script>
+    function getFile(){
+        var fileInput = document.getElementById("file").value;
+
+        if (fileInput!="") {
+            document.querySelector('#Image').value = fileInput.substring(12);
+        } else {
+            document.querySelector('#Image').value = "Không có tệp nào được chọn.";
+        }
+        
+    }
+</script>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#Description'))
+        .then(editor => {
+            console.log(editor);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
